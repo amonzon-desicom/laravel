@@ -18,12 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/legajos', 'LegajosController@list');
+include "rutas/legajos.php";
 
-Route::get('/legajos/{LegAdministrador}/{IDCodigo}', 'LegajosController@getOne');
-
-Route::get('/legajos/{id}', 'LegajosController@getOneById');
-
-Route::post('/legajos', 'LegajosController@newRecord');
-
-Route::put('/legajos', 'LegajosController@updateRecord');
+?>

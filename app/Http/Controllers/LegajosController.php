@@ -15,7 +15,7 @@ class LegajosController extends Controller
 
     function getOneById($id) {
  
-        return   response()->json(["status"=>200,"data"=>Legajos::whereRaw('LegAdministrador+IDCodigo='.$id)->get()]);
+        return   response()->json(["status"=>200,"data"=>Legajos::whereRaw('LegAdministrador+IDCodigo='.$id)->get()->first()]);
     
     }
 
@@ -36,6 +36,25 @@ class LegajosController extends Controller
 
 
         }catch(\Exception  $e){
+            return response()->json(["status"=>10,"data"=>$e],400);
+        }
+
+        return response()->json(["status"=>201,"data"=>$legajo],201);
+
+    }
+
+    function updateRecord(Request $request){
+
+        $data = $request->json()->all();
+        try{       
+        Legajos::unguard();
+
+        $legajo = Legajos::where('LegAdministrador', $data['LegAdministrador'])->where('IDCodigo',$data['IDCodigo'])->get()->first();
+        $legajo->fill($data);
+        $legajo->save();
+
+
+        }catch(\Exception  $e){
             return response()->json(["status"=>500,"data"=>$e]);
         }
 
@@ -43,7 +62,7 @@ class LegajosController extends Controller
 
     }
 
-    function updateRecord(Request $request){
+    function updateRecord1(Request $request){
 
         $data = $request->json()->all();
 
@@ -92,5 +111,19 @@ class LegajosController extends Controller
 
         return response()->json(["status"=>201,"data"=>$legajo]);
 
+    }
+
+    function DeleteRecord($id) {
+
+        $legajo = Legajos::whereRaw('LegAdministrador+IDCodigo='.$id)->get()->first();
+        try{
+            $legajo->delete();
+        }catch(\Exception $e){
+ 
+            return response()->json(["status"=>500,"data"=>$e]);
+        }
+ 
+        return   response()->json(["status"=>200,"data"=>"Legajo Eliminado: ".$id]);
+    
     }
 }

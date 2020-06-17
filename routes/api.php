@@ -19,5 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 include "rutas/legajos.php";
+include "rutas/user.php"
 
 ?>
